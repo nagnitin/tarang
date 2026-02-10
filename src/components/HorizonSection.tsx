@@ -2,10 +2,30 @@ import { Brain, Cpu, Smartphone, Sparkles } from "lucide-react";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "./AnimatedSection";
 
 const future = [
-  { icon: Brain, title: "Quantum Computing", desc: "Qubits, entanglement, and the race for quantum advantage." },
-  { icon: Cpu, title: "Neuromorphic Chips", desc: "Brain-inspired computing architectures for edge AI." },
-  { icon: Smartphone, title: "Flexible Electronics", desc: "Bendable displays, e-skin, and stretchable circuits." },
-  { icon: Sparkles, title: "AI Hardware", desc: "Custom accelerators, NPUs, and the future of silicon intelligence." },
+  {
+    icon: Brain,
+    title: "Quantum Computing",
+    desc: "Qubits, entanglement, and the race for quantum advantage.",
+    url: "https://en.wikipedia.org/wiki/Quantum_computing"
+  },
+  {
+    icon: Cpu,
+    title: "Neuromorphic Chips",
+    desc: "Brain-inspired computing architectures for edge AI.",
+    url: "https://en.wikipedia.org/wiki/Neuromorphic_engineering"
+  },
+  {
+    icon: Smartphone,
+    title: "Flexible Electronics",
+    desc: "Bendable displays, e-skin, and stretchable circuits.",
+    url: "https://en.wikipedia.org/wiki/Flexible_electronics"
+  },
+  {
+    icon: Sparkles,
+    title: "AI Hardware",
+    desc: "Custom accelerators, NPUs, and the future of silicon intelligence.",
+    url: "https://en.wikipedia.org/wiki/AI_accelerator"
+  },
 ];
 
 export const HorizonSection = () => (
@@ -21,7 +41,12 @@ export const HorizonSection = () => (
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {future.map((f) => (
           <StaggerItem key={f.title}>
-            <div className="glass-card-hover p-6 md:p-8 flex gap-5 group cursor-pointer">
+            <a
+              href={f.url}
+              target="_blank"
+              rel="noreferrer"
+              className="glass-card-hover p-6 md:p-8 flex gap-5 group cursor-pointer block h-full"
+            >
               <div className="w-14 h-14 shrink-0 rounded-xl bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center group-hover:shadow-[0_0_24px_hsl(174_72%_52%/0.3)] transition-shadow duration-500">
                 <f.icon className="w-7 h-7 text-primary" />
               </div>
@@ -29,7 +54,7 @@ export const HorizonSection = () => (
                 <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">{f.title}</h3>
                 <p className="text-sm text-muted-foreground">{f.desc}</p>
               </div>
-            </div>
+            </a>
           </StaggerItem>
         ))}
       </StaggerContainer>

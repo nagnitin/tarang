@@ -11,6 +11,7 @@ import { BargainBinSection } from "@/components/BargainBinSection";
 import { HorizonSection } from "@/components/HorizonSection";
 import { AchievementsSection } from "@/components/AchievementsSection";
 import { FooterSection } from "@/components/FooterSection";
+import { ProjectChat } from "@/components/ProjectChat";
 
 const Index = () => (
   <div className="min-h-screen bg-background">
@@ -27,6 +28,7 @@ const Index = () => (
     <HorizonSection />
     <AchievementsSection />
     <FooterSection />
+    <ProjectChat />
   </div>
 );
 

@@ -12,5 +12,8 @@ export const FooterSection = () => (
         © {new Date().getFullYear()} Department of Electronics & Communication Engineering, Gauhati University. All rights reserved.
       </p>
     </div>
+    <div className="border-t border-primary/10 mt-8 pt-8 text-center text-sm text-muted-foreground">
+      <p>© {new Date().getFullYear()} ECE Horizon Hub. <a href="https://www.linkedin.com/in/nitin-ranjan-nag/" target="_blank" rel="noreferrer" className="text-primary hover:underline">Made by Nitin Ranjan Nag</a></p>
+    </div>
   </footer>
 );

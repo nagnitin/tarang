@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Zap, Radio, CircuitBoard } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import { ArrowDown, Cpu } from "lucide-react";
+import heroBg from "../../department.jpg";
 
 export const HeroSection = () => (
   <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -10,22 +10,6 @@ export const HeroSection = () => (
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
     </div>
 
-    {/* Floating elements */}
-    <motion.div
-      animate={{ y: [-10, 10, -10] }}
-      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute top-1/4 left-[10%] hidden md:block"
-    >
-      <CircuitBoard className="w-8 h-8 text-primary/30" />
-    </motion.div>
-    <motion.div
-      animate={{ y: [10, -10, 10] }}
-      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute top-1/3 right-[15%] hidden md:block"
-    >
-      <Radio className="w-6 h-6 text-accent/30" />
-    </motion.div>
-
     {/* Content */}
     <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
       <motion.div
@@ -34,7 +18,7 @@ export const HeroSection = () => (
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="badge-tag mb-6 mx-auto w-fit">
-          <Zap className="w-3 h-3 mr-1.5" />
+          <Cpu className="w-3 h-3 mr-1.5" />
           Department of Electronics & Communication Engineering
         </div>
       </motion.div>

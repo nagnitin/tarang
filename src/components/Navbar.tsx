@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Cpu } from "lucide-react";
+import guLogo from "../GU Digital Logo 2.png";
+import tarangLogo from "../../Untitled_design__6_-removebg-preview.png";
 
 const navLinks = [
   { label: "Chip Chat", href: "#chip-chat" },
@@ -34,10 +36,24 @@ export const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 h-16">
           <a href="#" className="flex items-center gap-2 group">
-            <Cpu className="w-6 h-6 text-primary group-hover:rotate-90 transition-transform duration-500" />
-            <span className="text-lg font-bold tracking-tight">
-              <span className="gradient-text">TARANG</span>
-            </span>
+            <img
+              src={tarangLogo}
+              alt="Tarang ECE logo"
+              className="h-20 w-auto object-contain"
+            />
+            <img
+              src={guLogo}
+              alt="Gauhati University logo"
+              className="h-9 w-auto object-contain"
+            />
+            <div className="flex flex-col">
+              <span className="text-[10px] font-medium tracking-[0.18em] uppercase text-muted-foreground group-hover:text-primary transition-colors">
+                Gauhati University
+              </span>
+              <span className="text-lg font-bold tracking-tight leading-tight">
+                <span className="gradient-text">TARANG</span>
+              </span>
+            </div>
           </a>
 
           <div className="hidden lg:flex items-center gap-1">
