@@ -112,6 +112,15 @@ export const ProjectChat = () => {
 
       if (!res.ok) {
         console.error("Gemini error response:", raw);
+
+        if (res.status === 429) {
+          throw new Error("I'm receiving too many requests right now. Please wait a moment and try again.");
+        }
+
+        if (res.status === 503) {
+          throw new Error("The AI service is currently overloaded. Please try again later.");
+        }
+
         throw new Error(
           raw.message || `Gemini request failed (status ${res.status}).`
         );
@@ -141,81 +150,86 @@ export const ProjectChat = () => {
         ...prev,
         {
           id: prev.length + 1,
-          content:
-            "Something went wrong while contacting the project assistant. Please try again in a moment.",
-          sender: "ai",
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: prev.length + 1,
+              content: err instanceof Error ? err.message : "Something went wrong. Please try again.",
+              sender: "ai",
+            },
+          ]);
         },
       ]);
     } finally {
-      setIsLoading(false);
-    }
+  setIsLoading(false);
+}
   };
 
-  return (
-    <ExpandableChat
-      size="lg"
-      position="bottom-right"
-      icon={<Bot className="h-6 w-6" />}
-      aria-label="Tarang project assistant chat"
-    >
-      <ExpandableChatHeader className="flex-col text-center justify-center">
-        <h1 className="text-lg font-semibold">Tarang Project Assistant</h1>
-        <p className="text-xs text-muted-foreground">
-          Ask only project-related questions. Featured projects:
-          {" "}
-          {PROJECTS.join(", ")}.
-        </p>
-      </ExpandableChatHeader>
+return (
+  <ExpandableChat
+    size="lg"
+    position="bottom-right"
+    icon={<Bot className="h-6 w-6" />}
+    aria-label="Tarang project assistant chat"
+  >
+    <ExpandableChatHeader className="flex-col text-center justify-center">
+      <h1 className="text-lg font-semibold">Tarang Project Assistant</h1>
+      <p className="text-xs text-muted-foreground">
+        Ask only project-related questions. Featured projects:
+        {" "}
+        {PROJECTS.join(", ")}.
+      </p>
+    </ExpandableChatHeader>
 
-      <ExpandableChatBody>
-        <ChatMessageList smooth>
-          {messages.map((message) => (
-            <ChatBubble
-              key={message.id}
+    <ExpandableChatBody>
+      <ChatMessageList smooth>
+        {messages.map((message) => (
+          <ChatBubble
+            key={message.id}
+            variant={message.sender === "user" ? "sent" : "received"}
+          >
+            <ChatBubbleAvatar
+              className="h-8 w-8 shrink-0"
+              src={undefined}
+              fallback={message.sender === "user" ? "ST" : "AI"}
+            />
+            <ChatBubbleMessage
               variant={message.sender === "user" ? "sent" : "received"}
             >
-              <ChatBubbleAvatar
-                className="h-8 w-8 shrink-0"
-                src={undefined}
-                fallback={message.sender === "user" ? "ST" : "AI"}
-              />
-              <ChatBubbleMessage
-                variant={message.sender === "user" ? "sent" : "received"}
-              >
-                {message.content}
-              </ChatBubbleMessage>
-            </ChatBubble>
-          ))}
+              {message.content}
+            </ChatBubbleMessage>
+          </ChatBubble>
+        ))}
 
-          {isLoading && (
-            <ChatBubble variant="received">
-              <ChatBubbleAvatar className="h-8 w-8 shrink-0" fallback="AI" />
-              <ChatBubbleMessage isLoading />
-            </ChatBubble>
-          )}
-        </ChatMessageList>
-      </ExpandableChatBody>
+        {isLoading && (
+          <ChatBubble variant="received">
+            <ChatBubbleAvatar className="h-8 w-8 shrink-0" fallback="AI" />
+            <ChatBubbleMessage isLoading />
+          </ChatBubble>
+        )}
+      </ChatMessageList>
+    </ExpandableChatBody>
 
-      <ExpandableChatFooter>
-        <form
-          onSubmit={handleSubmit}
-          className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
-        >
-          <ChatInput
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about components, circuits, or code for a project…"
-            className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
-          />
-          <div className="flex items-center p-3 pt-0 justify-end">
-            <Button type="submit" size="sm" className="ml-auto gap-1.5">
-              Send
-              <CornerDownLeft className="size-3.5" />
-            </Button>
-          </div>
-        </form>
-      </ExpandableChatFooter>
-    </ExpandableChat>
-  );
+    <ExpandableChatFooter>
+      <form
+        onSubmit={handleSubmit}
+        className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
+      >
+        <ChatInput
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask about components, circuits, or code for a project…"
+          className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
+        />
+        <div className="flex items-center p-3 pt-0 justify-end">
+          <Button type="submit" size="sm" className="ml-auto gap-1.5">
+            Send
+            <CornerDownLeft className="size-3.5" />
+          </Button>
+        </div>
+      </form>
+    </ExpandableChatFooter>
+  </ExpandableChat>
+);
 }
 
