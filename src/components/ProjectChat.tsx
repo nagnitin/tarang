@@ -60,7 +60,7 @@ export const ProjectChat = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -77,18 +77,8 @@ export const ProjectChat = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    if (!apiKey) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          content:
-            "Gemini API key is not configured. Please set VITE_GEMINI_API_KEY in the environment to enable project chat.",
-          sender: "ai",
-        },
-      ]);
-      return;
-    }
+    // Check for API key is now done on the server, but we can't check it here easily without an endpoint.
+    // Instead we will handle the error from the server.
 
     try {
       setIsLoading(true);
@@ -100,35 +90,30 @@ export const ProjectChat = () => {
 
       const prompt = `${systemPrompt}\n\nConversation so far:\n${history}\nStudent: ${trimmed}\nAssistant:`;
 
-      const res = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
-          encodeURIComponent(apiKey),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [{ text: prompt }],
-              },
-            ],
-            generationConfig: {
-              temperature: 0.4,
-              maxOutputTokens: 512,
-            },
-          }),
+      const res = await fetch("/api/gemini", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: prompt }],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 512,
+          },
+        }),
+      });
 
       const raw = await res.json();
 
       if (!res.ok) {
-        // Log full error for debugging in the browser console
         console.error("Gemini error response:", raw);
         throw new Error(
-          `Gemini request failed (status ${res.status}). Check console for details.`,
+          raw.message || `Gemini request failed (status ${res.status}).`
         );
       }
 
