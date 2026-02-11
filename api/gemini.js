@@ -10,7 +10,7 @@ export default async function handler(request, response) {
     }
 
     try {
-        const body = await request.json();
+        const body = request.body;
 
         const res = await fetch(
             "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
